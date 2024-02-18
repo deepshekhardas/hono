@@ -143,7 +143,7 @@ export class HonoRequest<P extends string = '/', I extends Input['out'] = {}> {
    * ```
    */
   query(key: string): string | undefined
-  query(): Record<string, string>
+  query(): Record<string, string | undefined>
   query(key?: string) {
     return getQueryParam(this.url, key)
   }
@@ -162,7 +162,7 @@ export class HonoRequest<P extends string = '/', I extends Input['out'] = {}> {
    * ```
    */
   queries(key: string): string[] | undefined
-  queries(): Record<string, string[]>
+  queries(): Record<string, string[] | undefined>
   queries(key?: string) {
     return getQueryParams(this.url, key)
   }
@@ -181,7 +181,7 @@ export class HonoRequest<P extends string = '/', I extends Input['out'] = {}> {
    */
   header(name: RequestHeader): string | undefined
   header(name: string): string | undefined
-  header(): Record<RequestHeader | (string & CustomHeader), string>
+  header(): Record<RequestHeader | (string & CustomHeader), string | undefined>
   header(name?: string) {
     if (name) {
       return this.raw.headers.get(name) ?? undefined
