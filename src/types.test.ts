@@ -4137,3 +4137,64 @@ describe('Routes before .use() with explicit paths (#4388)', () => {
     type verify = Expect<Equal<Expected, Actual>>
   })
 })
+
+describe('', async () => {
+  const app = new Hono()
+    .get('/', async (c, next) => {
+      await next()
+    })
+    .get('/foo', async (c) => c.text('foo'))
+
+  const client = testClient(app)
+
+  it('', async () => {
+    // @ts-expect-error '/' route returns Promise<void>, so it should not be in schema
+    const res = await client.index.$get()
+  })
+})
+
+describe('Promise<void> only handler should not be added to schema', async () => {
+  const app = new Hono().get('/', async (c, next) => {
+    await next()
+  })
+
+  const client = testClient(app)
+
+  // @ts-expect-error '/' route returns Promise<void>, so it should not be in schema
+  const res = await client.index.$get()
+})
+
+describe('', () => {
+  const app = new Hono()
+    .get((c) => c.text('before'))
+    .use('/:id', async (_c, next) => {
+      await next()
+    })
+    .post((c) => c.text('after'))
+
+  type Actual = ExtractSchema<typeof app>
+  type Expected = {
+    '/': {
+      $get: {
+        input: {}
+        output: 'before'
+        outputFormat: 'text'
+        status: ContentfulStatusCode
+      }
+    }
+  } & {
+    '/:id': {
+      $post: {
+        input: {
+          param: {
+            id: string
+          }
+        }
+        output: 'after'
+        outputFormat: 'text'
+        status: ContentfulStatusCode
+      }
+    }
+  }
+  type verify = Expect<Equal<Expected, Actual>>
+})
