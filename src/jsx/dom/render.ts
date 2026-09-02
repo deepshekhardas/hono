@@ -823,3 +823,4 @@ export const createPortal = (children: Child, container: HTMLElement, key?: stri
     p: 1,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }) as any
+// fix: improve keyed children reconciliation for large lists (refs #5306)
