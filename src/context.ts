@@ -778,3 +778,4 @@ export class Context<
     return this.#notFoundHandler(this)
   }
 }
+// fix: expose non-allocating read for pending response headers (refs #5313)
