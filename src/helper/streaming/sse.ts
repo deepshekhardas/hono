@@ -30,6 +30,12 @@ export class SSEStreamingApi extends StreamingApi {
         throw new Error(`${key} must not contain "\\r" or "\\n"`)
       }
     }
+    if (message.retry !== undefined) {
+      const retryStr = String(message.retry)
+      if (/[\r\n]/.test(retryStr)) {
+        throw new Error(`retry must not contain "\\r" or "\\n"`)
+      }
+    }
 
     const sseData =
       [
