@@ -145,7 +145,7 @@ class Hono<
       for (const p of [path].flat()) {
         this.#path = p
         for (const m of [method].flat()) {
-          handlers.map((handler) => {
+          handlers.forEach((handler) => {
             this.#addRoute(m.toUpperCase(), this.#path, handler)
           })
         }
